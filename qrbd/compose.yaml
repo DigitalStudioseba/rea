@@ -1,0 +1,40 @@
+services:
+  qrbd:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      QRBD_DATA_DIR: /var/lib/qrbd
+      QRBD_TRUST_PROXY_HOPS: "1"
+    volumes:
+      - qrbd-private-data:/var/lib/qrbd
+    expose:
+      - "3000"
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      QRBD_DOMAIN: ${QRBD_DOMAIN:?Set QRBD_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      qrbd:
+        condition: service_healthy
+volumes:
+  qrbd-private-data:
+  caddy-data:
+  caddy-config:

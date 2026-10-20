@@ -1,0 +1,26 @@
+{
+  "name": "qrbd",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:agent": "python3 -m unittest discover -s agent -p \"test_*.py\"",
+    "start:configured": "node --env-file=.env server.mjs",
+    "test:browser": "node test/browser-smoke.mjs"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

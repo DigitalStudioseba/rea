@@ -1,0 +1,22 @@
+node_modules/
+.data/
+.env
+__pycache__/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/build/
+*.apk
+*.aab
+# Defense in depth: never publish local secrets/documents/databases.
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.log
+*.pem
+*.key
+.encryption-key
+.releases/
