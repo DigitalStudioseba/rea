@@ -1,0 +1,34 @@
+# Paid persistent disk holds SQLite/accounts/encryption key, NOT customer PDFs.
+# Creating a GitHub repo does NOT provision this service or incur this charge.
+services:
+  - type: web
+    name: qrbd
+    runtime: node
+    plan: starter
+    region: singapore
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass
+    disk:
+      name: qrbd-private-data
+      mountPath: /var/data/qrbd
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22.22.3"
+      - key: NODE_ENV
+        value: production
+      - key: QRBD_DATA_DIR
+        value: /var/data/qrbd
+      # Keep customer PDFs outside the persistent disk/snapshot path.
+      - key: QRBD_FILE_DIR
+        value: /tmp/qrbd-print-files
+      - key: QRBD_TRUST_PROXY_HOPS
+        value: "1"
+      - key: QRBD_REGISTRATION_CODE
+        generateValue: true
+      # QRBD_PUBLIC_URL is inferred from RENDER_EXTERNAL_URL initially.
+      # When adding a custom domain, set QRBD_PUBLIC_URL explicitly.
+      # QRBD_SECRET_KEY is optional: a stable random key is generated on the disk.
+      # Configure aamarPay/Meta secrets privately after successful deployment.

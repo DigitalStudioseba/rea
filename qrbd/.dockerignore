@@ -1,0 +1,11 @@
+*
+!package.json
+!package-lock.json
+!server.mjs
+!admin.mjs
+!lib/
+!lib/**
+!public/
+!public/**
+!agent/
+!agent/windows_agent.py
